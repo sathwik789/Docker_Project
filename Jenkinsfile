@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         FLASK_APP = "app.py"
+        VENV_DIR = "venv"
     }
 
     stages {
@@ -12,15 +13,17 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Setup Virtual Environment') {
             steps {
-                sh 'pip3 install -r requirements.txt'
+                sh 'python3 -m venv $VENV_DIR'
+                sh './$VENV_DIR/bin/pip install --upgrade pip'
+                sh './$VENV_DIR/bin/pip install -r requirements.txt'
             }
         }
 
         stage('Run App') {
             steps {
-                sh 'nohup python3 app.py > flask.log 2>&1 &'
+                sh './$VENV_DIR/bin/python app.py &'
                 sleep time: 10, unit: 'SECONDS'
             }
         }
