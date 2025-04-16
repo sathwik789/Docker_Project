@@ -1,9 +1,13 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.11'
+            args '-u root' // Optional: allows pip installations without permission issues
+        }
+    }
 
     environment {
-        FLASK_APP = "app.py"
-        VENV_DIR = "venv"
+        VENV_DIR = 'venv'
     }
 
     stages {
@@ -15,16 +19,21 @@ pipeline {
 
         stage('Setup Virtual Environment') {
             steps {
-                sh 'python3 -m venv $VENV_DIR'
-                sh './$VENV_DIR/bin/pip install --upgrade pip'
-                sh './$VENV_DIR/bin/pip install -r requirements.txt'
+                sh '''
+                    python -m venv $VENV_DIR
+                    . $VENV_DIR/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run App') {
             steps {
-                sh './$VENV_DIR/bin/python app.py &'
-                sleep time: 10, unit: 'SECONDS'
+                sh '''
+                    . $VENV_DIR/bin/activate
+                    python app/main.py
+                '''
             }
         }
     }
