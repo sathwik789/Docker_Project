@@ -27,4 +27,4 @@ jobs:
       with:
         context: .  # Use the current directory as the context for building the image
         push: true  # Push the image to Docker Hub
-        tags: sathwikreddy1/weather_dashboard_fixed:latest  # Replace with your Docker Hub username and image name
+        tags: sathwikreddy1/weather_dashboard_fixed:latest  # Replace with your Docker Hub username 
