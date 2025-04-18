@@ -11,7 +11,7 @@ import seaborn as sns
 import os
 
 app = Flask(__name__)
-
+#HI this is my DOCKER PROJECT
 # Load and preprocess data
 df = pd.read_csv("weatherHistory.csv")
 df = df[["Precip Type", "Temperature (C)", "Humidity", "Wind Speed (km/h)"]]
