@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'python:3.11'
-            args '-u root' // Optional: allows pip installations without permission issues
+            args '-u root'
         }
     }
 
