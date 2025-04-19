@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'python:3.11'
-            args '-u root'
+            args '-u root'  // Running as root, but ensure this is necessary for your use case
         }
     }
 
@@ -17,11 +17,14 @@ pipeline {
             }
         }
 
-        stage('Setup Virtual Environment') {
+        stage('Setup Virtual Environment and Install Dependencies') {
             steps {
                 sh '''
+                    # Set up virtual environment
                     python -m venv $VENV_DIR
                     . $VENV_DIR/bin/activate
+
+                    # Install dependencies
                     pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
@@ -31,6 +34,7 @@ pipeline {
         stage('Run App') {
             steps {
                 sh '''
+                    # Activate virtual environment and run the app
                     . $VENV_DIR/bin/activate
                     python app/main.py
                 '''
